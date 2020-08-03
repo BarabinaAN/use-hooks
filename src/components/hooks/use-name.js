@@ -1,18 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useCallback } from 'react'
+import { getName, useRequest } from './index'
 
 
 const useName = (id) => {
-   const [ name, setName ] = useState(null)
-   
-   useEffect(() => {
-      let cancelled = false
-      fetch(`https://swapi.dev/api/planets/${id}`)
-         .then(res => res.json())
-         .then(data => !cancelled && setName(data.name)); 
-      return () => cancelled = true
-   }, [id])
-
-   return name
+   const request = useCallback(() => getName(id), [id])
+   return useRequest(request)
 }
 
 export default useName
